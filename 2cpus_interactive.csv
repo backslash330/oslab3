@@ -1,0 +1,8 @@
+Ready Processes,Processes in CPU,Blocked processes,Completed processes,Accounted For, Number of CPUs,Exiting at simulation time
+95, 2, 0, 3,100, 2, 100
+93, 2, 0, 5,100, 2, 100
+90, 2, 0, 8,100, 2, 100
+85, 2, 0, 13,100, 2, 100
+95, 2, 0, 3,100, 2, 100
+44, 2, 0, 2,48, 2, 100
+35, 2, 0, 9,46, 2, 100
