@@ -29,12 +29,16 @@
 #!/bin/bash
 
 
+# I need to also calculate the mean throughput, standard deviation of the throughput
+
+# I neeed to also calculate the mean turnaround time and standard deviation of the turnaround time
+
 echo "Running experiment.sh"
 echo "Running configuration: 2 CPUs, all the processes created are interactive"
 # create csv and add header row 
 echo "Ready Processes,Processes in CPU,Blocked processes,Completed processes,Accounted For, Number of CPUs,Exiting at simulation time" > 2cpus_interactive_raw.csv
-echo "Ready Processes, Interactive Chance" > 2cpus_interactive_avg.csv
-ilength=1000
+echo "Ready Processes, Interactive Chance, Avg Total Processes" > 2cpus_interactive_avg.csv
+ilength=100
 iskip=10
 jlength=10
 
@@ -54,7 +58,15 @@ do
 
         # avg variables
         avg_ready_processes=0
+        avg_total_processes=0
+        avg_throughput=0
+        avg_turnaround_time=0
+        st_dev_throughput=0
+        st_dev_turnaround_time=0
         current_ready_processes=0
+        current_total_processes=0
+        current_throughput=0
+        current_turnaround_time=0
         avg_processes_in_cpu=0
         avg_blocked_processes=0
         avg_completed_processes=0
@@ -102,13 +114,18 @@ do
         # convert the line to an integer and add it to the avg variable
         current_ready_processes=${line%%,*}
         avg_ready_processes=$((avg_ready_processes + current_ready_processes))
-        echo ${line%%,*}
+       # echo ${line%%,*}
+
+        # Get the total number of created processes
+        current_total_processes=${line##*,}
+        avg_total_processes=$((avg_total_processes + current_total_processes))
     done < temp_j_loop.txt
     # divide by the number of runs to get the average
     echo "avg_ready_processes: $avg_ready_processes"
     avg_ready_processes=$((avg_ready_processes / jlength))
+    avg_total_processes=$((avg_total_processes / jlength))
     # add the average to the csv
-    echo "$avg_ready_processes,$i" >> 2cpus_interactive_avg.csv
+    echo "$avg_ready_processes,$i,$avg_total_processes" >> 2cpus_interactive_avg.csv
     # clear avg variables
     avg_ready_processes=0
 
