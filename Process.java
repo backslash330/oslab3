@@ -15,6 +15,7 @@ public class Process {
     private int timeToNextIoBlock;
     private int completedTime; // will be used to calculate turnaround time
     private int remainingQuantum;
+    private int remainingIOBlock;
     
     // Constructor
     public Process(String type, int burst, int ioBlock, int cpuTime, int creationTime) {
@@ -46,7 +47,9 @@ public class Process {
 
     // run the process
     public void run(int quantum) {
-        if (remainingQuantum == 0) {
+       // System.out.println("Running process " + pid);
+       // System.out.println("Time to next I/O block: " + timeToNextIoBlock);
+        if (remainingQuantum <= 0) {
             remainingQuantum = quantum;
         }
         if (timeToNextIoBlock <= quantum) {
@@ -77,12 +80,13 @@ public class Process {
 
     // increment the ioBlock time
     public void incrementIO() {
-        timeToNextIoBlock--;
+        remainingIOBlock++;
     }
 
     // reset the time to next I/O block
     public void resetTimeToNextIoBlock() {
         timeToNextIoBlock = ioBlock;
+        remainingIOBlock = 0;
     }
 
     // set completed time
@@ -98,6 +102,11 @@ public class Process {
     // get creation time
     public int getCreationTime() {
         return creationTime;
+    }
+
+    // check if ioBlock is complete
+    public boolean IOBlockCleared() {
+        return remainingIOBlock == ioBlock;
     }
 
 }

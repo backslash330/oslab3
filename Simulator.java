@@ -128,7 +128,7 @@ public class Simulator {
             //     • Move unblocked processes into the ready queue
             for (Process p : IOQueue) {
                 p.incrementIO();
-                if (p.getTimeToNextIoBlock() <= 0) {
+                if (p.IOBlockCleared() == true) {
                     p.resetTimeToNextIoBlock();
                     readyQueue.add(p);
                     IOQueueRemoval.add(p);
@@ -138,6 +138,7 @@ public class Simulator {
 
             for (Process p : IOQueueRemoval) {
                 IOQueue.remove(p);
+              //  System.out.println("Process " + p.getPid() + " has been removed from the I/O queue.");
             }
 
             // clear the removal list
@@ -182,7 +183,7 @@ public class Simulator {
         System.out.println("Accounted For: " + accountedFor + " of " + createdProcesses + " created processes");
         System.out.println("Number of CPUs: " + numCPUs);
         System.out.println("Exiting at simulation time: " + simulationTime);
-        System.out.println("Simulation Result:" + quantum + "," + completedProcesses + "," + simulationTime + "," + sumTurnaroundTime);
+        System.out.println("Simulation Result," + quantum + "," + completedProcesses + "," + simulationTime + "," + sumTurnaroundTime);
         
 
         System.exit(0);
